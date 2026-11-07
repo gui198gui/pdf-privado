@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Privado · Ferramentas de PDF que não saem do teu computador</title>
+  <meta name="description" content="Juntar, organizar, separar, comprimir e converter PDFs diretamente no browser. Os ficheiros nunca são enviados para nenhum servidor.">
+  <meta name="theme-color" content="#e8432d">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+
+<header class="topbar">
+  <a href="#" class="brand" data-route="">
+    <img src="icons/icon-192.png" alt="" width="32" height="32">
+    <span>PDF <b>Privado</b></span>
+  </a>
+  <span class="badge-local" title="Tudo é processado no teu dispositivo">🔒 100% local</span>
+  <button id="install-btn" class="btn small" hidden>Instalar app</button>
+</header>
+
+<main>
+
+  <!-- ================= INÍCIO ================= -->
+  <section class="view" id="view-home">
+    <div class="hero">
+      <h1>Ferramentas de PDF que <span>não saem do teu computador</span></h1>
+      <p>Junta, organiza, separa, comprime e converte PDFs diretamente no browser.
+         Nada é enviado para servidores: os teus documentos ficam contigo. Funciona até sem internet.</p>
+    </div>
+
+    <div class="tools">
+      <a class="tool" href="#juntar">
+        <span class="ico">➕</span>
+        <h2>Juntar PDFs</h2>
+        <p>Combina vários PDFs num só, pela ordem que quiseres.</p>
+      </a>
+      <a class="tool" href="#organizar">
+        <span class="ico">🗂️</span>
+        <h2>Organizar páginas</h2>
+        <p>Reordena, roda e apaga páginas de um PDF.</p>
+      </a>
+      <a class="tool" href="#separar">
+        <span class="ico">✂️</span>
+        <h2>Separar PDF</h2>
+        <p>Extrai intervalos de páginas ou separa cada página num ficheiro.</p>
+      </a>
+      <a class="tool" href="#imagens">
+        <span class="ico">🖼️</span>
+        <h2>Imagens para PDF</h2>
+        <p>Transforma fotos e digitalizações (JPG/PNG) num PDF.</p>
+      </a>
+      <a class="tool" href="#exportar">
+        <span class="ico">📸</span>
+        <h2>PDF para imagens</h2>
+        <p>Guarda cada página como JPG ou PNG.</p>
+      </a>
+      <a class="tool" href="#comprimir">
+        <span class="ico">🗜️</span>
+        <h2>Comprimir PDF</h2>
+        <p>Reduz o tamanho de PDFs digitalizados para enviar por email.</p>
+      </a>
+    </div>
+
+    <div class="why">
+      <div><b>🔒 Privado</b><span>Os ficheiros são processados no teu dispositivo e nunca são enviados.</span></div>
+      <div><b>📴 Offline</b><span>Depois da primeira visita funciona sem internet. Podes instalar como app.</span></div>
+      <div><b>🆓 Grátis</b><span>Sem contas, sem limites, sem marcas de água e sem anúncios.</span></div>
+    </div>
+  </section>
+
+  <!-- ================= JUNTAR ================= -->
+  <section class="view" id="view-juntar" hidden>
+    <a href="#" class="back">← Todas as ferramentas</a>
+    <h1>Juntar PDFs</h1>
+    <p class="lead">Adiciona os ficheiros, arrasta para mudar a ordem e carrega em Juntar.</p>
+
+    <label class="drop" data-accept="pdf" data-multiple>
+      <input type="file" accept="application/pdf,.pdf" multiple hidden>
+      <span class="drop-ico">📄</span>
+      <b>Escolher PDFs</b> ou arrasta-os para aqui
+    </label>
+
+    <ul class="file-list" id="merge-list"></ul>
+
+    <div class="actions">
+      <button class="btn primary" id="merge-run" disabled>Juntar PDFs</button>
+      <button class="btn ghost" id="merge-clear" hidden>Limpar</button>
+    </div>
+  </section>
+
+  <!-- ================= ORGANIZAR ================= -->
+  <section class="view" id="view-organizar" hidden>
+    <a href="#" class="back">← Todas as ferramentas</a>
+    <h1>Organizar páginas</h1>
+    <p class="lead">Arrasta as páginas para as reordenar. Usa os botões em cada página para rodar ou apagar.</p>
+
+    <label class="drop" data-accept="pdf">
+      <input type="file" accept="application/pdf,.pdf" hidden>
+      <span class="drop-ico">📄</span>
+      <b>Escolher um PDF</b> ou arrasta-o para aqui
+    </label>
+
+    <div class="toolbar" id="org-toolbar" hidden>
+      <span id="org-info"></span>
+      <button class="btn small ghost" id="org-rotate-all">↻ Rodar todas</button>
+      <button class="btn small ghost" id="org-reset">Repor</button>
+    </div>
+    <div class="pages" id="org-pages"></div>
+
+    <div class="actions">
+      <button class="btn primary" id="org-run" disabled>Guardar PDF</button>
+    </div>
+  </section>
+
+  <!-- ================= SEPARAR ================= -->
+  <section class="view" id="view-separar" hidden>
+    <a href="#" class="back">← Todas as ferramentas</a>
+    <h1>Separar PDF</h1>
+    <p class="lead">Escolhe as páginas a extrair ou separa o documento em ficheiros individuais.</p>
+
+    <label class="drop" data-accept="pdf">
+      <input type="file" accept="application/pdf,.pdf" hidden>
+      <span class="drop-ico">📄</span>
+      <b>Escolher um PDF</b> ou arrasta-o para aqui
+    </label>
+
+    <div class="panel" id="split-panel" hidden>
+      <p class="file-name" id="split-info"></p>
+      <label class="radio"><input type="radio" name="split-mode" value="range" checked>
+        Extrair páginas para um PDF
+      </label>
+      <div class="indent">
+        <input type="text" id="split-range" placeholder="ex: 1-3, 5, 8-10">
+        <small>Separa com vírgulas. Usa hífen para intervalos.</small>
+      </div>
+      <label class="radio"><input type="radio" name="split-mode" value="groups">
+        Um PDF por cada intervalo (ficheiro ZIP)
+      </label>
+      <label class="radio"><input type="radio" name="split-mode" value="each">
+        Uma página por ficheiro (ficheiro ZIP)
+      </label>
+    </div>
+
+    <div class="actions">
+      <button class="btn primary" id="split-run" disabled>Separar</button>
+    </div>
+  </section>
+
+  <!-- ================= IMAGENS ================= -->
+  <section class="view" id="view-imagens" hidden>
+    <a href="#" class="back">← Todas as ferramentas</a>
+    <h1>Imagens para PDF</h1>
+    <p class="lead">Junta fotos ou digitalizações num único PDF. Arrasta para mudar a ordem.</p>
+
+    <label class="drop" data-accept="image" data-multiple>
+      <input type="file" accept="image/jpeg,image/png,image/webp" multiple hidden>
+      <span class="drop-ico">🖼️</span>
+      <b>Escolher imagens</b> (JPG, PNG, WebP) ou arrasta-as para aqui
+    </label>
+
+    <div class="pages" id="img-list"></div>
+
+    <div class="panel options" id="img-options" hidden>
+      <label>Tamanho da página
+        <select id="img-size">
+          <option value="a4">A4</option>
+          <option value="letter">Carta (Letter)</option>
+          <option value="fit">Igual à imagem</option>
+        </select>
+      </label>
+      <label>Orientação
+        <select id="img-orient">
+          <option value="auto">Automática</option>
+          <option value="portrait">Vertical</option>
+          <option value="landscape">Horizontal</option>
+        </select>
+      </label>
+      <label>Margem
+        <select id="img-margin">
+          <option value="0">Sem margem</option>
+          <option value="20" selected>Pequena</option>
+          <option value="40">Grande</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="actions">
+      <button class="btn primary" id="img-run" disabled>Criar PDF</button>
+      <button class="btn ghost" id="img-clear" hidden>Limpar</button>
+    </div>
+  </section>
+
+  <!-- ================= EXPORTAR ================= -->
+  <section class="view" id="view-exportar" hidden>
+    <a href="#" class="back">← Todas as ferramentas</a>
+    <h1>PDF para imagens</h1>
+    <p class="lead">Converte as páginas de um PDF em imagens.</p>
+
+    <label class="drop" data-accept="pdf">
+      <input type="file" accept="application/pdf,.pdf" hidden>
+      <span class="drop-ico">📄</span>
+      <b>Escolher um PDF</b> ou arrasta-o para aqui
+    </label>
+
+    <div class="panel options" id="exp-options" hidden>
+      <p class="file-name" id="exp-info"></p>
+      <label>Formato
+        <select id="exp-format">
+          <option value="jpeg">JPG (mais leve)</option>
+          <option value="png">PNG (sem perdas)</option>
+        </select>
+      </label>
+      <label>Qualidade
+        <select id="exp-dpi">
+          <option value="96">Ecrã (96 DPI)</option>
+          <option value="150" selected>Normal (150 DPI)</option>
+          <option value="300">Impressão (300 DPI)</option>
+        </select>
+      </label>
+      <label>Páginas
+        <input type="text" id="exp-range" placeholder="Todas (ou ex: 1-3, 5)">
+      </label>
+    </div>
+
+    <div class="actions">
+      <button class="btn primary" id="exp-run" disabled>Converter</button>
+    </div>
+  </section>
+
+  <!-- ================= COMPRIMIR ================= -->
+  <section class="view" id="view-comprimir" hidden>
+    <a href="#" class="back">← Todas as ferramentas</a>
+    <h1>Comprimir PDF</h1>
+    <p class="lead">Ideal para PDFs digitalizados ou cheios de fotografias que são grandes demais para enviar.</p>
+
+    <label class="drop" data-accept="pdf">
+      <input type="file" accept="application/pdf,.pdf" hidden>
+      <span class="drop-ico">📄</span>
+      <b>Escolher um PDF</b> ou arrasta-o para aqui
+    </label>
+
+    <div class="panel options" id="cmp-options" hidden>
+      <p class="file-name" id="cmp-info"></p>
+      <label>Nível de compressão
+        <select id="cmp-level">
+          <option value="high">Forte (menor tamanho)</option>
+          <option value="medium" selected>Recomendado</option>
+          <option value="low">Leve (melhor qualidade)</option>
+        </select>
+      </label>
+      <label class="check"><input type="checkbox" id="cmp-gray"> Converter para preto e branco</label>
+      <p class="note">ℹ️ As páginas são convertidas em imagens comprimidas: o texto deixa de poder ser selecionado ou pesquisado.
+        Se o resultado ficar maior do que o original, mantém o original.</p>
+    </div>
+
+    <div class="actions">
+      <button class="btn primary" id="cmp-run" disabled>Comprimir</button>
+    </div>
+  </section>
+
+</main>
+
+<!-- Resultado / progresso -->
+<div class="overlay" id="progress" hidden>
+  <div class="dialog">
+    <div class="spinner"></div>
+    <p id="progress-text">A processar…</p>
+    <div class="bar"><div id="progress-bar"></div></div>
+  </div>
+</div>
+
+<div class="overlay" id="result" hidden>
+  <div class="dialog">
+    <div class="done-ico">✅</div>
+    <h2>Pronto!</h2>
+    <p id="result-text"></p>
+    <div class="actions center">
+      <a class="btn primary" id="result-download" download>Descarregar</a>
+      <button class="btn ghost" id="result-close">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<footer>
+  <p>Feito por <a href="https://gui198gui.github.io" target="_blank" rel="noopener">Guilherme Martins</a> ·
+     <a href="https://github.com/gui198gui/pdf-privado" target="_blank" rel="noopener">Código no GitHub</a> ·
+     Usa <a href="https://pdf-lib.js.org" target="_blank" rel="noopener">pdf-lib</a>,
+     <a href="https://mozilla.github.io/pdf.js/" target="_blank" rel="noopener">PDF.js</a> e
+     <a href="https://stuk.github.io/jszip/" target="_blank" rel="noopener">JSZip</a></p>
+</footer>
+
+<script src="vendor/pdf-lib.min.js"></script>
+<script src="vendor/jszip.min.js"></script>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

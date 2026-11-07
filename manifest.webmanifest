@@ -1,0 +1,16 @@
+{
+  "name": "PDF Privado",
+  "short_name": "PDF Privado",
+  "description": "Juntar, organizar, separar, comprimir e converter PDFs no browser, sem enviar ficheiros para servidores.",
+  "lang": "pt-PT",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f4f1",
+  "theme_color": "#e8432d",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
